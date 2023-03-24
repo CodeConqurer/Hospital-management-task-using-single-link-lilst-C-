@@ -62,6 +62,7 @@ class Hospital{
    
    }
 
+   
 
    bool remove(string name){
 
@@ -134,20 +135,24 @@ class Hospital{
 
    }
 
-   bool update(string newdata, string olddata){
+   bool update(patient newdata, string olddata){
 
      bool flag=false;
 
     node*temp=head;
     if(head->p1.name==olddata){
-      temp->p1.name=newdata;
+      temp->p1.name=newdata.name;
       flag=true;
     }
 
     else{
       while(temp->next!=NULL){
         if(temp->p1.name==olddata){
-          temp->p1.name=newdata;
+          temp->p1.CNIC=newdata.CNIC;       
+          temp->p1.age=newdata.age;
+          temp->p1.medhis=newdata.medhis;
+          temp->p1.currcond=newdata.currcond;
+          temp->p1.name=newdata.name;
           flag=true;
         }
         else{
@@ -158,6 +163,50 @@ class Hospital{
 
        return flag;        }
 
+
+
+   int countnode(){
+    node*temp=head;
+    int count=0;
+    while(temp!=0)
+{ 
+    count++;
+    temp=temp->next;
+
+} 
+
+return count;     }
+
+
+
+bool updateatnode(int pos,patient p){
+  int count=countnode();
+   bool flag=false;
+  if(pos>count && pos<count){
+    flag=false;
+    return flag;
+  }
+
+  else{
+    int count2=01;
+        node*temp=head;
+        while(count2!=pos){
+          temp=temp->next;
+          count2++;
+        }
+
+        temp->p1.name=p.name;
+        temp->p1.age=p.age;
+        temp->p1.CNIC=p.CNIC;
+        temp->p1.currcond=p.currcond;
+        temp->p1.medhis=p.medhis;
+        flag=true;
+  }
+
+
+return flag;
+  
+}
 
    bool displayspec(int cnic){
     bool flag=false;
@@ -201,7 +250,12 @@ int main()
 
 
     
-
+   patient p1;
+   p1.age=19;
+   p1.CNIC=03;
+   p1.medhis="Normal";
+   p1.currcond="Normal";
+   p1.name="Selena";
 
    if(h1.search(1)==false){
     cout<<"-----Record for Patient with CNIC 001 not found---------"<<endl;
@@ -219,13 +273,25 @@ cout<<"Name\t\tAge\tCNIC\t Conition\tCurrent Condition"<<endl<<endl;
     
 
 
- if(h1.update("Breel","Harry")==true){
-   cout<<"Displaying data after replacing John with Breel: "<<endl;
+ if(h1.update(p1,"Harry")==true){
+   cout<<"Displaying data after replacing John with Selena:  "<<endl;
 
     h1.show();}
     else{
       cout<<"------John Not Found-------"<<endl;
     }
-  
+    
+
+    cout<<"Total Number of nodes: "<<h1.countnode()<<endl;
+   
+    if(h1.updateatnode(2,p1)==false){
+      cout<<"---------Invali Node-----------"<<endl;
+    }
+
+    else{
+      cout<<"---------Displaying updated data of 2nd node: ---------------"<<endl;
+      cout<<"Name\t\tAge\tCNIC\t Conition\tCurrent Condition"<<endl<<endl;
+       h1.show();
+    }
 return 0;
 }
